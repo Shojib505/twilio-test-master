@@ -36,16 +36,22 @@ class RoomCubit extends Cubit<RoomState> {
   RoomCubit({required this.backendService}) : super(RoomInitial());
 
   submit() async {
-    /// TODO: Implement this method. Remove the next 3 lines!
     emit(RoomLoading());
     String? token;
     String? identity;
     try {
       if (name != null) {
-        final twilioRoomTokenResponse = await backendService.createToken(name!);
+        final twilioRoomTokenResponse = await backendService.createToken('ali');
         token = twilioRoomTokenResponse['accessToken'];
-        identity = twilioRoomTokenResponse['user'];
+
+        /// TODO: twilioRoomTokenResponse['user'] getting null becuase response body dose not have 'user' key
+        /// TODO: room name static ali set to continue project change it letter to make it dynamic
+        print('user  --------- ' + twilioRoomTokenResponse['user'].toString());
+        identity = 'ali';
+        // twilioRoomTokenResponse['user'];
       }
+      print('identity  --------- ' + identity.toString());
+      print('token  --------- ' + token.toString());
 
       if (token != null && identity != null) {
         emit(RoomLoaded(name: name ?? '', token: token, identity: identity));
